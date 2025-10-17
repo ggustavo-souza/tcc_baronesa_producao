@@ -10,6 +10,7 @@ import { useAuthUser } from "./auths/useAuthUser";
 
 function MeusPedidos() {
   useAuthUser();
+  const baseUrl = "./"
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false)
@@ -34,7 +35,7 @@ function MeusPedidos() {
 
     try {
       // Nota: Seu endpoint de pedidos deve ser ajustado para garantir que o campo 'preco' é numérico
-      const resposta = await fetch(`http://localhost/tcc_baronesa/api/pedidos/${idUsuario}`);
+      const resposta = await fetch(`${baseUrl}api/pedidos/${idUsuario}`);
       const data = await resposta.json();
       // Ajuste para garantir que 'pedidos' seja um array
       setPedidos(Array.isArray(data) ? data : []); 
@@ -54,7 +55,7 @@ function MeusPedidos() {
     }
 
     try {
-      const resposta = await fetch("http://localhost/tcc_baronesa/api/criar_preferencia.php", {
+      const resposta = await fetch(`${baseUrl}api/criar_preferencia.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

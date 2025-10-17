@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function AdminOrcamentos() {
-
+    const baseUrl = "."
     const [registros, setRegistros] = useState([])
     const [usuarios, setUsuarios] = useState([])
     const [categorias, setCategorias] = useState([])
@@ -27,7 +27,7 @@ export default function AdminOrcamentos() {
     }, [])
 
     async function fetchOrcamentos() {
-        const url = 'http://localhost/tcc_baronesa/api/orcamentos'
+        const url = `${baseUrl}/api/orcamentos`
         await fetch(url)
             .then(res => {
                 if (!res.ok) throw new Error("Erro ao carregar orçamentos")
@@ -40,7 +40,7 @@ export default function AdminOrcamentos() {
 
     async function fetchUsuarios() {
         try {
-            const res = await fetch("http://localhost/tcc_baronesa/api/usuarios");
+            const res = await fetch(`${baseUrl}/api/usuarios`);
             if (!res.ok) throw new Error("Erro ao carregar usuários");
             const data = await res.json();
             setUsuarios(data);
@@ -51,7 +51,7 @@ export default function AdminOrcamentos() {
 
     async function fetchCategorias() {
         try {
-            const res = await fetch("http://localhost/tcc_baronesa/api/categorias");
+            const res = await fetch(`${baseUrl}/api/categorias`);
             if (!res.ok) throw new Error("Erro ao carregar categorias");
             const data = await res.json();
             setCategorias(data);
@@ -61,7 +61,7 @@ export default function AdminOrcamentos() {
     }
 
     function excluirOrcamento(id) {
-        fetch(`http://localhost/tcc_baronesa/api/orcamentos/${id}`, { method: "DELETE" })
+        fetch(`${baseUrl}/api/orcamentos/${id}`, { method: "DELETE" })
             .then(res => res.json())
             .then(() => {
                 setRegistros(registros.filter(u => u.id !== id));
@@ -76,7 +76,7 @@ export default function AdminOrcamentos() {
             aprovacao: aprovado
         };
 
-        fetch(`http://localhost/tcc_baronesa/api/orcamentos/${id}`, {
+        fetch(`${baseUrl}/api/orcamentos/${id}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dados)

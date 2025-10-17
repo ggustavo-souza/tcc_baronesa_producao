@@ -9,6 +9,7 @@ import { useAuthUser } from "./auths/useAuthUser";
 
 function MinhaConta() {
     useAuthUser();
+    const baseUrl = "."
     const [NomeUsuario, setNomeUsuario] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();

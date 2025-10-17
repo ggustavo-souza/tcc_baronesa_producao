@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 
 function HomeProdutos() {
+    const baseUrl = "https://tccbaronesapi.cloud"
     const [moveis, setMoveis] = useState([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
@@ -14,7 +15,7 @@ function HomeProdutos() {
     useEffect(() => {
         async function fetchMoveis() {
             try {
-                const resposta = await fetch("http://localhost/tcc_baronesa/api/moveis");
+                const resposta = await fetch(`${baseUrl}/api/moveis`);
                 if (!resposta.ok) throw new Error("Erro ao carregar os produtos.");
                 const data = await resposta.json();
                 setMoveis(data);
@@ -60,7 +61,7 @@ function HomeProdutos() {
                                             <img
                                                 src={
                                                     movel.fotos && movel.fotos.length > 0
-                                                        ? `http://localhost/tcc_baronesa/api/uploads/${movel.fotos[0].foto}`
+                                                        ? `${baseUrl}/api/uploads/${movel.fotos[0].foto}`
                                                         : "https://via.placeholder.com/150"
                                                 }
                                                 alt={movel.nome}

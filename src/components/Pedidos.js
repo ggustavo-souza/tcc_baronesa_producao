@@ -10,7 +10,7 @@ import { useAuthUser } from "./auths/useAuthUser";
 
 function MeusPedidos() {
   useAuthUser();
-  const baseUrl = "./"
+  const baseUrl = "https://tccbaronesapi.cloud/"
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false)

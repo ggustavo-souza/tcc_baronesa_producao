@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 function FormRegistrar() {
     const navigate = useNavigate();
-    const baseUrl = "./"
+    const baseUrl = "https://tccbaronesapi.cloud/"
     useEffect(() => {
         Aos.init({ duration: 1000 });
     

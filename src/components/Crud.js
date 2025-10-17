@@ -7,7 +7,7 @@ import "../awesome/all.min.css";
 
 function Crud() {
   const navigate = useNavigate();
-  const baseUrl = "."
+  const baseUrl = "https://tccbaronesapi.cloud"
 
   const [contador, setContador] = useState({
     usuarios: 0,

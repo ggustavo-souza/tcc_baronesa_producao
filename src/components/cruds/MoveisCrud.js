@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function MoveisCrud() {
-    const baseUrl = ".";
+    const baseUrl = "https://tccbaronesapi.cloud";
     const navigate = useNavigate();
     const [registros, setRegistros] = useState([]);
     const [categorias, setCategorias] = useState([]);

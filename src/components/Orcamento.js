@@ -11,7 +11,7 @@ function HomeOrcamento() {
     // pega o usuário logado
     const usuario = useAuthUser(); // retorna o objeto do usuário ou redireciona se não estiver logado
 
-    const baseUrl = "./";
+    const baseUrl = "https://tccbaronesapi.cloud/";
 
     useEffect(() => {
         Aos.init({ duration: 1000, once: true });

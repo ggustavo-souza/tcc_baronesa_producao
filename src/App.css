@@ -1,0 +1,357 @@
+@font-face {
+  font-family: 'RocaOne';
+  src: url(font/roca-one-regular.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.App {
+  text-align: center;
+  font-family: RocaOne, sans-serif;
+}
+
+.titulo-produto {
+  overflow-wrap: break-word;
+  word-wrap: break-word; 
+  word-break: break-word;
+}
+
+.corBotao {
+  transition: transform 0.3s ease-in-out;
+}
+
+.corBotao:hover {
+  transform: scale(1.10);
+}
+
+.CorNavbar {
+  background-color: #503325;
+}
+
+.subir {
+  transition: transform 1000 ease-in-out;
+}
+
+.subir li:hover {
+  transform: scale(1.10);
+}
+
+.nav-item {
+  position: relative;
+  color: inherit;
+}
+
+.nav-item::after {
+  content: " ";
+  width: 0%;
+  height: 4px;
+  background-color: #FFD230;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: 0.5s ease-in-out;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+.carousel-item {
+  transition: transform 1s ease-in-out !important;
+}
+
+
+.wide-carousel-container {
+  width: 90%; 
+  margin-right: 5px; 
+  overflow: hidden; /* Garante que o conteúdo que extrapola o contêiner seja escondido */
+  border-radius: 45px;
+}
+
+.wide-carousel-img {
+  height: 600px; 
+  object-fit: fill; /* Garante que a imagem preencha tudo o container */
+  opacity: 0.7;
+}
+
+.carousel-caption h3 {
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-weight: bolder;
+}
+
+.carousel-caption p {
+  color: #eee;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.corAmarela {
+  font-weight: bold;
+}
+
+
+.suba {
+  transition: transform 0.1s ease-in-out;
+  display: inline-block; 
+}
+
+.suba:hover {
+  transform: scale(1.10);
+}
+
+.category-container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
+}
+
+.category-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.category-list {
+  list-style-type: none; /* Remove os marcadores (bolinhas) da lista */
+  display: flex;         /* O segredo para a lista horizontal! */
+  justify-content: center; 
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;       /* Permite que os itens quebrem para a próxima linha em telas pequenas */
+  gap: 15px;             /* Adiciona um espaçamento entre os itens */
+}
+
+.category-item a {
+  display: block;
+  padding: 12px 25px;
+  background-color: #503325;
+  color: #FFD230;
+  text-decoration: none;
+  border-radius: 25px; 
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s; /* Efeito suave na transição */
+}
+
+.category-item a:hover {
+  background-color: #FFD230;
+  color:#503325;
+}
+
+.footerBotao {
+  transition: background-color 0.5s, color 0.3s;
+}
+
+
+.footerBotao:hover {
+  background-color: #503325;
+  color:#FFD230;
+}
+
+.corFooter {
+  background-color: #503325c1;
+}
+
+.sobre-nos-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem; /* Espaçamento entre o texto e a imagem */
+  padding: 4rem 2rem;
+  background-color: #503325c1; /* Um tom de branco envelhecido, elegante */
+  max-width: 1200px;
+  margin: 4rem auto; /* Centraliza o componente na página */
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.sobre-nos-content {
+  flex: 1; /* O conteúdo de texto ocupa o espaço disponível */
+  max-width: 800px;
+}
+
+.sobre-nos-title {
+  font-size: 3.5rem;
+  color: #FFD230; /* Um tom de marrom escuro */
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+/* Linha sutil abaixo do título principal */
+.sobre-nos-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: #503325c1; /* Um tom dourado/bege */
+}
+
+.sobre-nos-subtitle {
+  font-size: 2.5rem;
+  color: #FFD230; /* Tom de marrom médio */
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.sobre-nos-content p {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: #fff; /* Cor de texto padrão, fácil de ler */
+  text-align: justify;
+  margin-top: 1rem;
+}
+
+.sobre-nos-valores {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.sobre-nos-valores li {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+/* Adiciona um ícone sutil antes de cada valor */
+.sobre-nos-valores li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #c8a97e; /* Mesma cor dourada do detalhe do título */
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.sobre-nos-image-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sobre-nos-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px; /* Bordas arredondadas */
+  object-fit: cover;
+  margin-right: 50px;
+  margin-bottom: 1rem
+}
+
+/* --- Responsividade para dispositivos móveis --- */
+@media (max-width: 900px) {
+  .sobre-nos-container {
+    flex-direction: column; /* Empilha o conteúdo e a imagem */
+    text-align: center;
+    gap: 2rem;
+    padding: 2rem 1.5rem;
+  }
+  
+  .sobre-nos-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .sobre-nos-content {
+    max-width: 100%;
+  }
+}
+
+.CardOrcamento {
+  background-color: #503325;
+  color: #FFD230;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  /* 1. Esconde o cabeçalho original da tabela */
+  .table-responsive-cards thead {
+    display: none;
+  }
+
+  /* 2. Faz com que os elementos da tabela se comportem como blocos */
+  .table-responsive-cards, 
+  .table-responsive-cards tbody, 
+  .table-responsive-cards tr, 
+  .table-responsive-cards td {
+    display: block;
+    width: 100%;
+  }
+
+  /* 3. Estiliza cada linha (tr) como um card separado */
+  .table-responsive-cards tr {
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem; /* 6px */
+    padding: 1rem;
+  }
+  
+  /* 4. Remove a borda das células e as posiciona para o rótulo */
+  .table-responsive-cards td {
+    border: none;
+    text-align: right; /* Alinha o valor à direita */
+    padding-left: 50%; /* Deixa espaço para o rótulo à esquerda */
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+  
+  .table-responsive-cards td:last-child {
+      margin-bottom: 0;
+  }
+
+  /* 5. Cria o rótulo (Ex: "Nome:") usando o atributo 'data-label' que adicionaremos no HTML */
+  .table-responsive-cards td:before {
+    content: attr(data-label); /* Pega o texto do atributo */
+    position: absolute;
+    left: 0.75rem;
+    font-weight: bold;
+    text-align: left;
+    white-space: nowrap; /* Impede que o rótulo quebre a linha */
+  }
+
+  /* 6. Centraliza os botões de ação */
+  .table-responsive-cards td:last-child {
+    text-align: center;
+    padding-left: 0;
+  }
+}
+
+.card-produto {
+  background-color: #503325c1;
+  border-radius: 10px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #FFD230;
+  box-shadow: 0 0 0 0.25rem rgba(255, 210, 48, 0.4);
+}
+
+.image-preview-item-bs {
+    width: 100px;
+    height: 100px;
+}
+
+.image-preview-item-bs img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.input-group-text {
+    width: 42px;
+    justify-content: center;
+}
+

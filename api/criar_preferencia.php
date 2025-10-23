@@ -49,7 +49,7 @@ try {
     $client = new PreferenceClient();
 
     // Define a base das URLs de retorno (backurls)
-    $backUrlsBase = "http://localhost/tcc_baronesa/api/backurls"; 
+    $backUrlsBase = "https://tccbaronesapi.cloud/api/backurls"; 
 
     $preferenceData = [
         "items" => [

@@ -3,22 +3,39 @@ import "../../App.css";
 import "../../awesome/all.min.css";
 import Navbar from "../Navbar";
 import Footer from '../Footer';
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom"; // 1. Importar o useParams
 
 function HomeProdutos() {
-    const baseUrl = "https://tccbaronesapi.cloud"
+    const { categoria } = useParams();
+
     const [moveis, setMoveis] = useState([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
 
     useEffect(() => {
         async function fetchMoveis() {
+            // Reseta o estado a cada nova busca
+            setLoading(true);
+            setErro(null);
+
+            const apiUrl = categoria
+                ? `http://localhost/tcc_baronesa/api/moveis/categoria/${categoria}`
+                : "http://localhost/tcc_baronesa/api/moveis";
+
             try {
-                const resposta = await fetch(`${baseUrl}/api/moveis`);
-                if (!resposta.ok) throw new Error("Erro ao carregar os produtos.");
-                const data = await resposta.json();
-                setMoveis(data);
+                const resposta = await fetch(apiUrl);
+
+                if (!resposta.ok) {
+                    if(resposta.status === 404) {
+                        setMoveis([]);
+                    } else {
+                        throw new Error("Erro ao carregar os produtos.");
+                    }
+                } else {
+                    const data = await resposta.json();
+                    setMoveis(data);
+                }
+
             } catch (error) {
                 setErro(error.message);
             } finally {
@@ -26,67 +43,94 @@ function HomeProdutos() {
             }
         }
         fetchMoveis();
-    }, []);
+    }, [categoria]); // A dependência [categoria] é crucial!
+
+    // Função para capitalizar a primeira letra para o título
+    const capitalizar = (str) => {
+        if (!str) return "";
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+
+    const renderStatusContainer = (iconClass, text, isError = false) => (
+        <div className="row mt-5">
+            <div className="col-12">
+                <div className="status-container">
+                    <i className={`fa-solid ${iconClass} fa-2x ${isError ? 'text-danger' : 'text-muted'} mb-3`}></i>
+                    <p className={`status-text ${isError ? 'text-danger' : 'text-muted'}`}>
+                        {text}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <main>
             <Navbar />
-            <div className="container mt-5 mb-5">
-                <div className="col-12">
-                    <h1 className="text-center fw-bold mb-3" style={{ color: "#FFD230" }}>
-                        Produtos
-                    </h1>
+            <div className="container my-5 py-5">
+                <div className="row">
+                    <div className="col-12 text-center">
+                        {/* 5. Título dinâmico que reflete a categoria atual */}
+                        <h1 className="titulo-pagina">
+                            {categoria ? capitalizar(categoria) : 'Nossos Produtos'}
+                        </h1>
+                        <p className="lead mb-5" style={{color: "#ffffff"}}>
+                            Móveis artesanais que contam uma história em cada detalhe.
+                        </p>
+                    </div>
                 </div>
 
-                <div className="grid p-3 mb-4" style={{ backgroundColor: "#503325c1", borderRadius: "10px" }} data-aos='fade-up'>
-                    {loading ? (
-                        <p className="text-center text-light py-5">Carregando produtos...</p>
-                    ) : erro ? (
-                        <p className="text-center text-danger py-5">{erro}</p>
-                    ) : moveis.length === 0 ? (
-                        <p className="text-center text-light py-5">Nenhum produto disponível.</p>
-                    ) : (
-                        <div className="row mt-4">
-                            {moveis.map((movel) => (
-                                <div className="col-md-4" key={movel.id}>
-                                    <div
-                                        className="card card-produto p-3 m-2"
-                                        style={{ backgroundColor: "#503325c1", borderRadius: "10px" }}
-                                    >
-                                        <h2 className="text-center titulo-produto" style={{ color: "#FFD230" }}>
-                                            {movel.nome}
-                                        </h2>
+                {loading ? (
+                    <div className="row mt-5">
+                        <div className="col-12">
+                            <div className="status-container">
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                                <p className="status-text">Carregando produtos...</p>
+                            </div>
+                        </div>
+                    </div>
+                ) : erro ? (
+                    renderStatusContainer("fa-triangle-exclamation", erro, true)
+                ) : moveis.length === 0 ? (
+                    // Mensagem ajustada para quando não há produtos na categoria
+                    renderStatusContainer("fa-box-open", `Nenhum produto encontrado ${categoria ? `na categoria '${categoria}'` : 'no momento.'}`)
+                ) : (
+                    <div className="product-grid">
+                        {moveis.map((movel) => {
+                            const imageUrl = (movel.fotos && movel.fotos.length > 0)
+                                ? `http://localhost/tcc_baronesa/api/uploads/${movel.fotos[0].foto}`
+                                : "https://via.placeholder.com/300x250/ccc/888?text=Sem+Foto";
 
-                                        <div className="card-img-top text-center">
-                                            <img
-                                                src={
-                                                    movel.fotos && movel.fotos.length > 0
-                                                        ? `${baseUrl}/api/uploads/${movel.fotos[0].foto}`
-                                                        : "https://via.placeholder.com/150"
-                                                }
-                                                alt={movel.nome}
-                                                className="img-fluid"
-                                                style={{ maxHeight: "200px", objectFit: "cover", borderRadius: "10px" }}
-                                            />
+                            return (
+                                <div className="card card-produto" key={movel.id}>
+                                    <div className="card-img-container">
+                                        <img
+                                            src={imageUrl}
+                                            className="card-img-top"
+                                            alt={movel.nome}
+                                        />
+                                        <div className="card-img-overlay-content">
+                                            <Link to={`/produto/${movel.id}`} className="btn btn-ver-mais">
+                                                Ver Detalhes
+                                            </Link>
                                         </div>
-
-                                        <p className="text-center mt-2" style={{ color: "#FFD230" }}>
+                                    </div>
+                                    <div className="card-body">
+                                        <h2 className="card-title">{movel.nome}</h2>
+                                        <p className="card-text">
                                             {movel.descricao || "Sem descrição disponível."}
                                         </p>
-
-                                        <p className="text-center fw-bold" style={{ color: "#FFD230" }}>
-                                            R$ {parseFloat(movel.valor).toFixed(2)}
+                                        <p className="card-price">
+                                            R$ {parseFloat(movel.valor).toFixed(2).replace('.', ',')}
                                         </p>
-
-                                        <Link to={`/produto/${movel.id}`} className="btn btn-warning corBotao w-100 mt-auto">
-                                            Ver mais
-                                        </Link>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
             <Footer />
         </main>

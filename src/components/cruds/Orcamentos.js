@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function AdminOrcamentos() {
-    const baseUrl = "https://tccbaronesapi.cloud"
+
     const [registros, setRegistros] = useState([])
     const [usuarios, setUsuarios] = useState([])
     const [categorias, setCategorias] = useState([])
@@ -27,7 +27,7 @@ export default function AdminOrcamentos() {
     }, [])
 
     async function fetchOrcamentos() {
-        const url = `${baseUrl}/api/orcamentos`
+        const url = 'http://localhost/tcc_baronesa/api/orcamentos'
         await fetch(url)
             .then(res => {
                 if (!res.ok) throw new Error("Erro ao carregar orçamentos")
@@ -40,7 +40,7 @@ export default function AdminOrcamentos() {
 
     async function fetchUsuarios() {
         try {
-            const res = await fetch(`${baseUrl}/api/usuarios`);
+            const res = await fetch("http://localhost/tcc_baronesa/api/usuarios");
             if (!res.ok) throw new Error("Erro ao carregar usuários");
             const data = await res.json();
             setUsuarios(data);
@@ -49,9 +49,16 @@ export default function AdminOrcamentos() {
         }
     }
 
+    function handleContato(idOrcamento, numeroCliente) {
+        // logica whatsapp
+        console.log("Entrando em contato sobre o orçamento:", idOrcamento);
+        const mensagem = `Olá! Somos da A Baronesa Movelaria. Queremos contatar sobre o Orçamento (Nº ${idOrcamento}).`;
+        window.open(`https://wa.me/${numeroCliente}?text=${encodeURIComponent(mensagem)}`, '_blank');
+    }
+
     async function fetchCategorias() {
         try {
-            const res = await fetch(`${baseUrl}/api/categorias`);
+            const res = await fetch("http://localhost/tcc_baronesa/api/categorias");
             if (!res.ok) throw new Error("Erro ao carregar categorias");
             const data = await res.json();
             setCategorias(data);
@@ -61,7 +68,7 @@ export default function AdminOrcamentos() {
     }
 
     function excluirOrcamento(id) {
-        fetch(`${baseUrl}/api/orcamentos/${id}`, { method: "DELETE" })
+        fetch(`http://localhost/tcc_baronesa/api/orcamentos/${id}`, { method: "DELETE" })
             .then(res => res.json())
             .then(() => {
                 setRegistros(registros.filter(u => u.id !== id));
@@ -76,7 +83,7 @@ export default function AdminOrcamentos() {
             aprovacao: aprovado
         };
 
-        fetch(`${baseUrl}/api/orcamentos/${id}`, {
+        fetch(`http://localhost/tcc_baronesa/api/orcamentos/${id}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(dados)
@@ -163,13 +170,26 @@ export default function AdminOrcamentos() {
                         )}
                         {/* Botão Desaprovar, aparece se não for Desaprovado. Adicionei uma lógica aqui: */}
                         {registro.aprovacao !== 'desaprovado' && (
-                            <button className="btn btn-warning m-3" onClick={() => {
-                                setShowModalDesaprovar(true);
-                                setOrcamentoSelecionado(registro.id)
-                            }
-                            }>
-                                <i className='fa fa-xmark me-1'></i>Desaprovar
-                            </button>
+                            <>
+                                <button className="btn btn-warning m-3" onClick={() => {
+                                    setShowModalDesaprovar(true);
+                                    setOrcamentoSelecionado(registro.id)
+                                }
+                                }>
+                                    <i className='fa fa-xmark me-1'></i>Desaprovar
+                                </button>
+
+                            </>
+                        )}
+                        {registro.aprovacao === ('aprovado') && (
+                            <>
+                                <button className="btn btn-warning m-3" onClick={() => {
+                                    handleContato(registro.id,registro.telefone)
+                                }
+                                }>
+                                    <i className='fa fa-phone me-2'></i>Entrar em contato
+                                </button>
+                            </>
                         )}
                         <button className="btn btn-danger m-3" onClick={() => {
                             setShowModalExcluir(true);
@@ -233,41 +253,75 @@ export default function AdminOrcamentos() {
 
             {/* Modal Excluir */}
             {showModalExcluir && (
-                <div className="modal" data-aos="fade-up" tabIndex="-1" style={{ display: 'block' }}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content CorNavbar">
-                            <div className="modal-header">
-                                <h5 className="modal-title" style={{ color: '#FFD230' }}>Confirmar Exclusão</h5>
-                                <button type="button" className="btn-close" onClick={() => setShowModalExcluir(false)}></button>
-                            </div>
-                            <div className="modal-body">
-                                <h3 style={{ color: '#FFD230' }}>Tem certeza que deseja excluir este orçamento?</h3>
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary" onClick={() => setShowModalExcluir(false)}>Cancelar</button>
-                                <button className="btn btn-warning" onClick={() => excluirOrcamento(orcamentoSelecionado)}>Excluir</button>
+                <>
+                    <div className="modal" data-aos="fade-up" style={{ display: 'block' }}>
+                        <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content border-0 shadow-lg rounded-4">
+                                <div className="modal-header border-0 pb-0">
+                                    <h5 className="modal-title text-dark fw-bold">
+                                        <i className="fa-solid fa-triangle-exclamation text-danger me-2"></i>
+                                        Confirmar Exclusão
+                                    </h5>
+                                    <button type="button" className="btn-close" onClick={() => setShowModalExcluir(false)}></button>
+                                </div>
+                                <div className="modal-body py-4">
+                                    <p className="mb-0">Deseja realmente excluir este orçamento? Esta ação não pode ser desfeita.</p>
+                                </div>
+                                <div className="modal-footer border-0 bg-light">
+                                    <button type="button" className="btn btn-secondary" onClick={() => setShowModalExcluir(false)}>Cancelar</button>
+                                    <button type="button" className="btn btn-danger fw-bold" onClick={() => excluirOrcamento(orcamentoSelecionado)}>
+                                        <i className="fa-solid fa-trash me-2"></i>
+                                        Sim, Excluir
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div className="modal-backdrop fade show"></div>
+                </>
             )}
             {showModalExcluir && <div className="modal-backdrop fade show"></div>}
 
             {/* Modal Aprovar */}
             {showModalAprovar && (
-                <div className="modal" data-aos="fade-up" tabIndex="-1" style={{ display: 'block' }}>
+                <div
+                    className="modal"
+                    data-aos="fade-up"
+                    style={{ display: 'block' }}
+                >
                     <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content CorNavbar">
-                            <div className="modal-header">
-                                <h5 className="modal-title" style={{ color: '#FFD230' }}>Aprovar Orçamento</h5>
-                                <button type="button" className="btn-close" onClick={() => setShowModalAprovar(false)}></button>
+                        <div className="modal-content border-0 shadow-lg" style={{ backgroundColor: '#FFFFFF', borderRadius: '10px' }}>
+
+                            <div className="modal-header border-0 pb-2" style={{ backgroundColor: '#FFD230' }}>
+                                <h5 className="modal-title text-dark fw-bold">Mensagem!</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    aria-label="Close"
+                                    onClick={() => setShowModalAprovar(false)}
+                                ></button>
                             </div>
-                            <div className="modal-body">
-                                <h3 style={{ color: '#FFD230' }}>Tem certeza que deseja aprovar este orçamento?</h3>
+
+                            <div className="modal-body pt-4 pb-4">
+                                <h5 className="">Quer mesmo aprovar o orçamento?</h5>
                             </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary" onClick={() => setShowModalAprovar(false)}>Cancelar</button>
-                                <button className="btn btn-warning" onClick={() => aprovarOrcamento(orcamentoSelecionado, "aprovado")}>Aprovar</button>
+
+                            <div className="modal-footer align-self-center border-0 pt-0">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary fw-bold px-4"
+                                    onClick={() => setShowModalAprovar(false)}
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-success fw-bold px-4"
+                                    onClick={() => aprovarOrcamento(orcamentoSelecionado, "aprovado")}
+                                    style={{ backgroundColor: '#FFD230', borderColor: '#FFD110' }}
+                                >
+                                    Sim, quero!
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -276,19 +330,44 @@ export default function AdminOrcamentos() {
             {showModalAprovar && <div className="modal-backdrop fade show"></div>}
 
             {showModalDesaprovar && (
-                <div className="modal" data-aos="fade-up" tabIndex="-1" style={{ display: 'block' }}>
+                <div
+                    className="modal"
+                    data-aos="fade-up"
+                    style={{ display: 'block' }}
+                >
                     <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content CorNavbar">
-                            <div className="modal-header">
-                                <h5 className="modal-title" style={{ color: '#FFD230' }}>Desaprovar Orçamento</h5>
-                                <button type="button" className="btn-close" onClick={() => setShowModalDesaprovar(false)}></button>
+                        <div className="modal-content border-0 shadow-lg" style={{ backgroundColor: '#FFFFFF', borderRadius: '10px' }}>
+
+                            <div className="modal-header border-0 pb-2" style={{ backgroundColor: '#FFD230' }}>
+                                <h5 className="modal-title text-dark fw-bold">Mensagem!</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    aria-label="Close"
+                                    onClick={() => setShowModalDesaprovar(false)}
+                                ></button>
                             </div>
-                            <div className="modal-body">
-                                <h3 style={{ color: '#FFD230' }}>Tem certeza que deseja Desaprovar este orçamento?</h3>
+
+                            <div className="modal-body pt-4 pb-4">
+                                <h5 className="">Quer mesmo desaprovar o orçamento?</h5>
                             </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary" onClick={() => setShowModalDesaprovar(false)}>Cancelar</button>
-                                <button className="btn btn-warning" onClick={() => aprovarOrcamento(orcamentoSelecionado, "desaprovado")}>Desaprovar</button>
+
+                            <div className="modal-footer align-self-center border-0 pt-0">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary fw-bold px-4"
+                                    onClick={() => setShowModalDesaprovar(false)}
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-success fw-bold px-4"
+                                    onClick={() => aprovarOrcamento(orcamentoSelecionado, "desaprovado")}
+                                    style={{ backgroundColor: '#FFD230', borderColor: '#FFD110' }}
+                                >
+                                    Sim, quero!
+                                </button>
                             </div>
                         </div>
                     </div>

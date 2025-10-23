@@ -12,7 +12,7 @@ function FormLogin() {
         Aos.init({ duration: 1000 });
 
     }, []);
-    const baseUrl = "https://tccbaronesapi.cloud"
+
     const [alertMessage, setAlertMessage] = useState({ type: "", message: "" });
     const [form, setForm] = useState({ nome: "", password: "" });
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ function FormLogin() {
         e.preventDefault();
         setAlertMessage({ type: '', message: '' });
         try {
-            const response = await fetch(`${baseUrl}/api/login.php`, {
+            const response = await fetch("http://localhost/tcc_baronesa/api/login.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

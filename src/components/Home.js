@@ -33,7 +33,7 @@ function Home() {
 }
 
 function ListaPequena() {
-  const categories = ["mesas", "cadeiras", "armários", "cômodas", "planejados"];
+  const categories = ["mesas", "cadeiras", "armários", "cômodas"];
 
   return (
     <div className="category-container mt-4" data-aos="fade-up">

@@ -11,12 +11,9 @@ function HomeOrcamento() {
     // pega o usuário logado
     const usuario = useAuthUser(); // retorna o objeto do usuário ou redireciona se não estiver logado
 
-    const baseUrl = "https://tccbaronesapi.cloud/";
-
     useEffect(() => {
         Aos.init({ duration: 1000, once: true });
     }, []);
-
 
     // estados do form
     const [categoria, setCategoria] = useState("");
@@ -37,7 +34,7 @@ function HomeOrcamento() {
         }
 
         try {
-            const response = await fetch(`${baseUrl}api/orcamentos`, {
+            const response = await fetch("http://localhost/tcc_baronesa/api/orcamentos", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

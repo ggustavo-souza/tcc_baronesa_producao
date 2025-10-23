@@ -7,7 +7,6 @@ import "../awesome/all.min.css";
 
 function Crud() {
   const navigate = useNavigate();
-  const baseUrl = "https://tccbaronesapi.cloud"
 
   const [contador, setContador] = useState({
     usuarios: 0,
@@ -19,7 +18,7 @@ function Crud() {
   const [loading, setLoading] = useState(true); // flag de carregamento
 
   useEffect(() => {
-    fetch(`${baseUrl}/api/contador.php`)
+    fetch("http://localhost/tcc_baronesa/api/contador.php")
       .then(res => res.json())
       .then(data => {
         setContador(data);

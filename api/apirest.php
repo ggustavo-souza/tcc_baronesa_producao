@@ -1,4 +1,5 @@
 <?php
+// =================== CABEÇALHOS CORS E CONTENT-TYPE (sem alterações) ===================
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
@@ -11,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 header("Content-Type: application/json; charset=UTF-8");
 include 'config/database.php';
 
+// =================== LÓGICA DE ROTEAMENTO (com adição) ===================
 $UriReq = trim($_SERVER['REQUEST_URI'], '/');
 $path = parse_url($UriReq, PHP_URL_PATH);
 $parts = explode('/', $path);
@@ -27,12 +29,20 @@ if (isset($parts[count($parts) - 3]) && $parts[count($parts) - 3] === 'orcamento
     $tabela = 'orcamentos';
     $acao = 'getByUser';
     $id = $parts[count($parts) - 1]; // ID do usuário
-} 
+}
+// =================== NOVO TRECHO PARA FILTRO DE CATEGORIA ===================
+// Ex: /api/moveis/categoria/cadeiras
+else if (isset($parts[count($parts) - 3]) && $parts[count($parts) - 3] === 'moveis' && $parts[count($parts) - 2] === 'categoria') {
+    $tabela = 'moveis';
+    $acao = 'getByCategory';
+    $id = $parts[count($parts) - 1]; // O 'id' aqui é o NOME da categoria (ex: 'cadeiras')
+}
+// =================== FIM DO NOVO TRECHO ===================
 // Ex: /api/moveis/1
 else if (is_numeric($last)) {
     $id = $last;
     $tabela = $prev;
-} 
+}
 // Ex: /api/moveis
 else {
     $id = null;
@@ -52,17 +62,39 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         if ($tabela === 'orcamentos' && $acao === 'getByUser' && is_numeric($id)) {
-            // $id aqui é o id_usuario
+            // ... (código existente sem alterações)
             $stmt = $pdo->prepare("SELECT * FROM orcamentos WHERE id_usuario = ? ORDER BY id ASC");
             $stmt->execute([$id]);
             $orcamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($orcamentos ?: []);
-            exit; 
+            exit;
         }
-        
+
         if ($tabela === 'moveis') {
-            if ($id) {
-                // GET por id, incluindo fotos
+            // =================== NOVA LÓGICA PARA BUSCAR POR CATEGORIA ===================
+            if ($acao === 'getByCategory' && $id) {
+                // $id aqui é o nome da categoria, então precisamos de um JOIN
+                $sql = "SELECT m.*
+                        FROM moveis m
+                        JOIN categorias c ON m.categoria_id = c.id
+                        WHERE c.nome = ?";
+
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$id]); // $id contém o nome da categoria vindo da URL
+                $moveis = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                // A mesma lógica de buscar fotos precisa ser aplicada aqui
+                foreach ($moveis as &$m) {
+                    $stmt2 = $pdo->prepare("SELECT id, foto, principal FROM moveis_fotos WHERE id_movel = ?");
+                    $stmt2->execute([$m['id']]);
+                    $m['fotos'] = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+                }
+
+                echo json_encode($moveis ?: []); // Retorna array vazio se nada for encontrado
+            }
+            // =================== FIM DA NOVA LÓGICA ===================
+            else if ($id) {
+                // GET por id, incluindo fotos (código existente sem alterações)
                 $stmt = $pdo->prepare("SELECT * FROM moveis WHERE id = ?");
                 $stmt->execute([$id]);
                 $movel = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -77,7 +109,7 @@ try {
                     echo json_encode(["message" => "Móvel não encontrado"]);
                 }
             } else {
-                // GET lista de móveis
+                // GET lista de todos os móveis (código existente sem alterações)
                 $stmt = $pdo->query("SELECT * FROM moveis ORDER BY id ASC");
                 $moveis = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -90,12 +122,12 @@ try {
                 echo json_encode($moveis);
             }
             exit;
-        }elseif ($tabela === "pedidos") {
+        } elseif ($tabela === "pedidos") {
+            // ... (código existente sem alterações)
             if ($id) {
-                // Pega todos os pedidos do usuário + info do móvel
                 $stmt = $pdo->prepare("
                     SELECT p.id, p.id_usuario, p.id_movel, p.data_pedido, p.status,
-                        m.nome, m.valor AS preco
+                           m.nome, m.valor AS preco
                     FROM pedidos p
                     JOIN moveis m ON p.id_movel = m.id
                     WHERE p.id_usuario = ?
@@ -103,12 +135,11 @@ try {
                 ");
                 $stmt->execute([$id]);
                 $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
                 echo json_encode($pedidos ?: []);
             }
             exit;
-        }else {
-            // GET padrão para usuarios/categorias
+        } else {
+            // GET padrão para usuarios/categorias (código existente sem alterações)
             if ($id) {
                 $stmt = $pdo->prepare("SELECT * FROM $tabela WHERE id = ?");
                 $stmt->execute([$id]);

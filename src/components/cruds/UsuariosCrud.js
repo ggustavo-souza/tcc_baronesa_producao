@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function UsuariosCrud() {
-    const baseUrl = "https://tccbaronesapi.cloud";
     const navigate = useNavigate();
     const [registros, setRegistros] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -37,7 +36,7 @@ export default function UsuariosCrud() {
 
     async function fetchUsuarios() {
         try {
-            const res = await fetch(`${baseUrl}/api/usuarios`);
+            const res = await fetch("http://localhost/tcc_baronesa/api/usuarios");
             if (!res.ok) throw new Error("Erro ao carregar usuários");
             const data = await res.json();
             setRegistros(data);
@@ -51,7 +50,7 @@ export default function UsuariosCrud() {
     async function excluirUsuario() {
         if (!usuarioIdParaExcluir) return;
         try {
-            const res = await fetch(`${baseUrl}/api/usuarios/${usuarioIdParaExcluir}`, { method: "DELETE" });
+            const res = await fetch(`http://localhost/tcc_baronesa/api/usuarios/${usuarioIdParaExcluir}`, { method: "DELETE" });
             if (!res.ok) throw new Error("Erro ao excluir usuário");
             await res.json(); // Consumir a resposta da API
             setRegistros(registros.filter(u => u.id !== usuarioIdParaExcluir));
@@ -71,8 +70,8 @@ export default function UsuariosCrud() {
 
         const isEditing = !!formData.id;
         const url = isEditing
-            ? `${baseUrl}/api/usuarios/${formData.id}`
-            : `${baseUrl}/api/usuarios`;
+            ? `http://localhost/tcc_baronesa/api/usuarios/${formData.id}`
+            : "http://localhost/tcc_baronesa/api/usuarios";
 
         // Apenas envia a senha se ela foi preenchida
         const dadosParaEnviar = { ...formData };

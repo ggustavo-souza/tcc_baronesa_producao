@@ -6,7 +6,6 @@ import Aos from 'aos';
 
 export default function VerMovel() {
     const { id } = useParams();
-    const baseUrl = "https://tccbaronesapi.cloud"
     const navigate = useNavigate();
     const [movel, setMovel] = useState(null);
     const [categoria, setCategoria] = useState('');
@@ -23,7 +22,7 @@ export default function VerMovel() {
 
     async function carregarMovel() {
         try {
-            const res = await fetch(`${baseUrl}/api/moveis/${id}`);
+            const res = await fetch(`http://localhost/tcc_baronesa/api/moveis/${id}`);
             if (!res.ok) throw new Error('Erro ao carregar móvel');
             const data = await res.json();
             setMovel(data);
@@ -32,7 +31,7 @@ export default function VerMovel() {
                 setImagemPrincipal(principal.foto);
             }
             if (data.categoria_id) {
-                const resCat = await fetch(`${baseUrl}/api/categorias/${data.categoria_id}`);
+                const resCat = await fetch(`http://localhost/tcc_baronesa/api/categorias/${data.categoria_id}`);
                 if (resCat.ok) {
                     const catData = await resCat.json();
                     setCategoria(catData.nome);
@@ -55,7 +54,7 @@ export default function VerMovel() {
             const usuarioId = usuarioLogado.id;
 
             try {
-                const res = await fetch(`${baseUrl}/api/pedidos`, {
+                const res = await fetch(`http://localhost/tcc_baronesa/api/pedidos`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -109,7 +108,7 @@ export default function VerMovel() {
                         <div className="col-md-6">
                             {imagemPrincipal && (
                                 <img
-                                    src={`${baseUrl}/api/uploads/${imagemPrincipal}`}
+                                    src={`http://localhost/tcc_baronesa/api/uploads/${imagemPrincipal}`}
                                     alt={movel.nome}
                                     className="img-fluid rounded mb-3"
                                     style={{ objectFit: 'cover', width: '100%', height: '400px' }}
@@ -119,7 +118,7 @@ export default function VerMovel() {
                                 {movel.fotos?.map(f => (
                                     <img
                                         key={f.id}
-                                        src={`${baseUrl}/api/uploads/${f.foto}`}
+                                        src={`http://localhost/tcc_baronesa/api/uploads/${f.foto}`}
                                         alt="miniatura"
                                         width="80"
                                         height="80"

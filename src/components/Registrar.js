@@ -15,7 +15,7 @@ function FormRegistrar() {
     }, []);
     const [form, setForm] = useState({ nome: "", email: "", password: "" });
     const [alertMessage, setAlertMessage] = useState({ type: "", message: "" });
-    const urlAPI = "tccbaronesaapi.cloud/"
+    const urlAPI = "https://tccbaronesapi.cloud/"
 
     const handleChange = e => {
         setForm({ ...form, [e.target.name]: e.target.value });

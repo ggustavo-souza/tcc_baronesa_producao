@@ -16,7 +16,7 @@ function HomeOrcamento() {
     }, []);
 
     // estados do form
-    const urlAPI = "tccbaronesaapi.cloud/"
+    const urlAPI = "https://tccbaronesapi.cloud/"
     const [categoria, setCategoria] = useState("");
     const [mensagem, setMensagem] = useState("");
     const [telefone, setTelefone] = useState("");

@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function UsuariosCrud() {
-    const urlAPI = "tccbaronesaapi.cloud/"
+    const urlAPI = "https://tccbaronesapi.cloud/"
     const navigate = useNavigate();
     const [registros, setRegistros] = useState([]);
     const [loading, setLoading] = useState(true);

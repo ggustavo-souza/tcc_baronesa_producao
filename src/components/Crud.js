@@ -7,7 +7,7 @@ import "../awesome/all.min.css";
 
 function Crud() {
   const navigate = useNavigate();
-    const urlAPI = "tccbaronesaapi.cloud/"
+    const urlAPI = "https://tccbaronesapi.cloud/"
   const [contador, setContador] = useState({
     usuarios: 0,
     moveis: 0,

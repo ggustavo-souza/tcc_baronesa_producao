@@ -5,7 +5,7 @@ import { useAuthUser } from "./auths/useAuthUser";
 
 export default function MeusOrcamentos() {
     useAuthUser();
-    const urlAPI = "tccbaronesaapi.cloud/"
+    const urlAPI = "https://tccbaronesapi.cloud/"
     const [orcamentos, setOrcamentos] = useState([]);
     const [erro, setErro] = useState(null);
     const [loading, setLoading] = useState(true);

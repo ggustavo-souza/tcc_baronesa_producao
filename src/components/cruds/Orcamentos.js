@@ -27,7 +27,7 @@ export default function AdminOrcamentos() {
     }, [])
 
     async function fetchOrcamentos() {
-        const url = 'http://localhost/tcc_baronesa/api/orcamentos'
+        const url = `${urlAPI}api/orcamentos`
         await fetch(url)
             .then(res => {
                 if (!res.ok) throw new Error("Erro ao carregar orçamentos")
@@ -40,7 +40,7 @@ export default function AdminOrcamentos() {
 
     async function fetchUsuarios() {
         try {
-            const res = await fetch("http://localhost/tcc_baronesa/api/usuarios");
+            const res = await fetch(`${urlAPI}api/usuarios`);
             if (!res.ok) throw new Error("Erro ao carregar usuários");
             const data = await res.json();
             setUsuarios(data);
@@ -58,7 +58,7 @@ export default function AdminOrcamentos() {
 
     async function fetchCategorias() {
         try {
-            const res = await fetch("http://localhost/tcc_baronesa/api/categorias");
+            const res = await fetch(`${urlAPI}api/categorias`);
             if (!res.ok) throw new Error("Erro ao carregar categorias");
             const data = await res.json();
             setCategorias(data);

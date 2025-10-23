@@ -27,7 +27,7 @@ export default function MeusOrcamentos() {
 
     async function carregarOrcamentos(idUsuario) {
         try {
-            const url = `http://localhost/tcc_baronesa/api/orcamentos/usuario/${idUsuario}`;
+            const url = `${urlAPI}api/orcamentos/usuario/${idUsuario}`;
             const resposta = await fetch(url);
 
             if (!resposta.ok) {
@@ -48,7 +48,7 @@ export default function MeusOrcamentos() {
         if (window.confirm("Tem certeza que deseja excluir este orçamento? Esta ação não pode ser desfeita.")) {
             console.log("Excluindo orçamento:", idOrcamento);
             try {
-                const resposta = await fetch(`http://localhost/tcc_baronesa/api/orcamentos/${idOrcamento}`, {
+                const resposta = await fetch(`${urlAPI}api/orcamentos/${idOrcamento}`, {
                     method: 'DELETE'
                 });
 

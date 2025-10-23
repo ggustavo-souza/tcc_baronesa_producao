@@ -36,7 +36,7 @@ export default function UsuariosCrud() {
 
     async function fetchUsuarios() {
         try {
-            const res = await fetch("http://localhost/tcc_baronesa/api/usuarios");
+            const res = await fetch(`${urlAPI}api/usuarios`);
             if (!res.ok) throw new Error("Erro ao carregar usuários");
             const data = await res.json();
             setRegistros(data);
@@ -50,7 +50,7 @@ export default function UsuariosCrud() {
     async function excluirUsuario() {
         if (!usuarioIdParaExcluir) return;
         try {
-            const res = await fetch(`http://localhost/tcc_baronesa/api/usuarios/${usuarioIdParaExcluir}`, { method: "DELETE" });
+            const res = await fetch(`${urlAPI}api/usuarios/${usuarioIdParaExcluir}`, { method: "DELETE" });
             if (!res.ok) throw new Error("Erro ao excluir usuário");
             await res.json(); // Consumir a resposta da API
             setRegistros(registros.filter(u => u.id !== usuarioIdParaExcluir));
@@ -70,8 +70,8 @@ export default function UsuariosCrud() {
 
         const isEditing = !!formData.id;
         const url = isEditing
-            ? `http://localhost/tcc_baronesa/api/usuarios/${formData.id}`
-            : "http://localhost/tcc_baronesa/api/usuarios";
+            ? `${urlAPI}api/usuarios/${formData.id}`
+            : `${urlAPI}api/usuarios`;
 
         // Apenas envia a senha se ela foi preenchida
         const dadosParaEnviar = { ...formData };

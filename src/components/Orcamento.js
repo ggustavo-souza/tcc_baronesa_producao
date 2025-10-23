@@ -34,7 +34,7 @@ function HomeOrcamento() {
         }
 
         try {
-            const response = await fetch("http://localhost/tcc_baronesa/api/orcamentos", {
+            const response = await fetch(`${urlAPI}api/orcamentos`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

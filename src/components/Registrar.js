@@ -28,7 +28,7 @@ function FormRegistrar() {
         e.preventDefault();
         setAlertMessage({ type: '', message: ''});
 
-        const resposta = await fetch("http://localhost/tcc_baronesa/api/cadastro.php", {
+        const resposta = await fetch(`${urlAPI}api/cadastro.php`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(form)

@@ -19,8 +19,8 @@ function HomeProdutos() {
             setErro(null);
 
             const apiUrl = categoria
-                ? `http://localhost/tcc_baronesa/api/moveis/categoria/${categoria}`
-                : "http://localhost/tcc_baronesa/api/moveis";
+                ? `${urlAPI}api/moveis/categoria/${categoria}`
+                : `${urlAPI}api/moveis`;
 
             try {
                 const resposta = await fetch(apiUrl);
@@ -100,7 +100,7 @@ function HomeProdutos() {
                     <div className="product-grid">
                         {moveis.map((movel) => {
                             const imageUrl = (movel.fotos && movel.fotos.length > 0)
-                                ? `http://localhost/tcc_baronesa/api/uploads/${movel.fotos[0].foto}`
+                                ? `${urlAPI}api/uploads/${movel.fotos[0].foto}`
                                 : "https://via.placeholder.com/300x250/ccc/888?text=Sem+Foto";
 
                             return (

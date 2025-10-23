@@ -18,7 +18,7 @@ function Crud() {
   const [loading, setLoading] = useState(true); // flag de carregamento
 
   useEffect(() => {
-    fetch("http://localhost/tcc_baronesa/api/contador.php")
+    fetch(`${urlAPI}api/contador.php`)
       .then(res => res.json())
       .then(data => {
         setContador(data);

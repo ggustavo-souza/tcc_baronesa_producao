@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom"; // 1. Importar o useParams
 
 function HomeProdutos() {
     const { categoria } = useParams();
-
+    const urlAPI = "tccbaronesaapi.cloud/"
     const [moveis, setMoveis] = useState([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);

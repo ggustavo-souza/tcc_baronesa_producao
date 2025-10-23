@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function AdminOrcamentos() {
-
+    const urlAPI = "tccbaronesaapi.cloud/"
     const [registros, setRegistros] = useState([])
     const [usuarios, setUsuarios] = useState([])
     const [categorias, setCategorias] = useState([])

@@ -12,7 +12,7 @@ function FormLogin() {
         Aos.init({ duration: 1000 });
 
     }, []);
-
+    const urlAPI = "tccbaronesaapi.cloud/"
     const [alertMessage, setAlertMessage] = useState({ type: "", message: "" });
     const [form, setForm] = useState({ nome: "", password: "" });
     const navigate = useNavigate();
